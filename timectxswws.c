@@ -54,11 +54,11 @@ int main(int argc, char** argv) {
     free(buf);
   }
 
-  const int shm_id = shmget(IPC_PRIVATE, sizeof (int) + ws_pages * 4096,
+  const int shm_id = shmget(IPC_PRIVATE, (ws_pages + 1) * 4096,
                             IPC_CREAT | 0666);
   const pid_t other = fork();
   int* futex = shmat(shm_id, NULL, 0);
-  void* ws = futex + 1;
+  void* ws = ((char *) futex) + 4096;
   *futex = 0xA;
   if (other == 0) {
     for (int i = 0; i < iterations; i++) {

@@ -19,6 +19,14 @@ static inline long long unsigned time_ns(struct timespec* const ts) {
     + (long long unsigned) ts->tv_nsec;
 }
 
+static inline int get_iterations(int ws_pages) {
+  int iterations = 1000;
+  while (iterations * ws_pages * 4096L < 4294967296L) {  // 4GB
+    iterations += 1000;
+  }
+  return iterations;
+}
+
 int main(int argc, char** argv) {
   if (argc != 2) {
     fprintf(stderr, "usage: %s <size of working set in 4K pages>\n", *argv);
@@ -29,7 +37,7 @@ int main(int argc, char** argv) {
     fprintf(stderr, "Invalid usage: working set size must be positive\n");
     return 1;
   }
-  const int iterations = 20000;
+  const int iterations = get_iterations(ws_pages);
   struct timespec ts;
 
   long long unsigned memset_time = 0;

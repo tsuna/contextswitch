@@ -1,0 +1,8 @@
+Little micro-benchmarks to assess the performance overhead of context
+switching.
+
+timesyscall: Benchmarks the overhead of a system call.
+timectxsw:   Benchmarks the overhead of context switching between 2 processes.
+timetctxsw:  Benchmarks the overhead of context switching between 2 threads.
+timectxswws: Benchmarks the overhead of context switching between 2 processes
+             using a working set of the size specified in argument.

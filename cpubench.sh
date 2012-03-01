@@ -28,6 +28,7 @@ runbench() {
   $* ./timesyscall
   $* ./timectxsw
   $* ./timetctxsw
+  $* ./timetctxsw2
 }
 
 echo '-- No CPU affinity --'
@@ -35,3 +36,6 @@ runbench
 
 echo '-- With CPU affinity --'
 runbench taskset -c $((total - 1))
+
+echo '-- With CPU affinity to CPU 0 --'
+runbench taskset -a 1

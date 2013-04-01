@@ -35,7 +35,12 @@ echo '-- No CPU affinity --'
 runbench
 
 echo '-- With CPU affinity --'
-runbench taskset -c $((total - 1))
+lastcpu=`awk </dev/null -v ncpus=$ncpus 'BEGIN {
+  n = 1;
+  for(i = 1; i < ncpus; i++) n *= 2;
+  printf("0x%x\n", n);
+}'`
+runbench taskset $lastcpu
 
 echo '-- With CPU affinity to CPU 0 --'
-runbench taskset -a 1
+runbench taskset `sed 's/,//g;s/^/0x/' /sys/bus/node/devices/node0/cpumap`
